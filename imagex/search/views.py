@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from search.models import Image
+from .models import Image
+from django.conf import settings
 
 
 def index(request):
@@ -7,7 +8,9 @@ def index(request):
     return render(request, 'search/index.html')
 
 
-def results(request, keyword):
-    images = Image.objects.filter(tag__icontains=keyword)
-    # imagesid = ImageHasTag.objects.get(tagID=tagid)
-    # images = Image.objects.filter(id=imagesid)
+def results(request):
+    if request.method == 'GET':
+        keyword = request.GET.get('keyword', None)
+        images = Image.objects.filter(tag__icontains=keyword).order_by('-uploadDate', '-id')
+        return render(request, 'search/results.html', {"keyword": keyword, "images": images,
+                                                       'media_url': settings.MEDIA_URL})

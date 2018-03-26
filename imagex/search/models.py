@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 
 class Member(models.Model):
@@ -13,7 +14,7 @@ class Member(models.Model):
 
 
 class Image(models.Model):
-    img = models.ImageField(upload_to='upload')
+    img = models.ImageField(upload_to='images')
     title = models.CharField(max_length=90)
     CATEGORY = (
         ('ABS', 'Abstract'),
@@ -41,6 +42,7 @@ class Image(models.Model):
     description = models.CharField(max_length=280)
     photographer = models.ForeignKey(Member, on_delete=models.CASCADE)
     tag = models.CharField(max_length=10, null=True)
+    uploadDate = models.DateField(default=datetime.date.today)
 
     def __str__(self):
         return self.title
