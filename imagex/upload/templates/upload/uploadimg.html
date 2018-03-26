@@ -1,0 +1,15 @@
+<form method="POST" action = "" enctype="multipart/form-data">
+	{% csrf_token %}
+	Title : <input type = "text" name = "title" id = "title"/><br/>
+	Description : <input type = "text" name = "description" id = "description"/><br/>
+	<p>category:
+	<select name="table">
+	<option value="math">math</option>
+	<option value="music">music</option>
+	<option value="art">art</option>
+	</select>
+	</p>
+	<input type="file" name="img"/><br/>
+	
+	<button type="submit">upload</button>
+</form>
