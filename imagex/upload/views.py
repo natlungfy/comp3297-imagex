@@ -7,6 +7,7 @@ def uploadimg(request):
     # get member object, get member id, get their quota
     # in html, if quota > xxx, display disabled upload button, else display enabled upload button
     if request.method == 'POST':
+        usr = Member.object.get(id = "nat")
         new_img = Image(
             img=request.FILES.get('img'),
             title=request.POST.get('title'),
@@ -16,4 +17,4 @@ def uploadimg(request):
             photographer=Member.objects.get(id=request.POST.get('photographer'))
         )
         new_img.save()
-    return render(request, 'upload/upload.html')
+    return render(request, 'upload/upload.html',{"usr":usr})
