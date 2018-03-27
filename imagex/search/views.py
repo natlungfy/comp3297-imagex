@@ -4,8 +4,8 @@ from django.conf import settings
 
 
 def index(request):
-    # all_images = Image.objects.all()
-    return render(request, 'search/index.html')
+    all_images = Image.objects.all().order_by('-uploadDate', '-id')
+    return render(request, 'search/index.html', {'images': all_images})
 
 
 def results(request):

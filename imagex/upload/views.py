@@ -4,6 +4,8 @@ from search.models import Image, Member
 
 
 def uploadimg(request):
+    # get member object, get member id, get their quota
+    # in html, if quota > xxx, display disabled upload button, else display enabled upload button
     if request.method == 'POST':
         new_img = Image(
             img=request.FILES.get('img'),

@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Search results - imageX{% endblock %}
 {% block content %}
-<body>
 <div class="container">
     <h1>Search results for "{{ keyword }}"</h1>
     <div class="row">
@@ -9,11 +8,11 @@
         <div class="col-md-4">
             <div class="card mb-4 box-shadow">
                 <img class="card-img-top"
-                     src="http://127.0.0.1:8000{{media_url}}{{ i.img }}"
+                     src="http://127.0.0.1:8000/{{ i.img }}"
                      alt="{{ i.description }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ i.title }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">by {{ i.photographer }}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">by {{ i.photographer.name }}</h6>
                     <p class="card-body">{{i.description}}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
