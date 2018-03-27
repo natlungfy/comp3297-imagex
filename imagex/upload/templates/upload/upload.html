@@ -1,60 +1,69 @@
 {% extends "base.html" %}
 {% block title %}Upload Image - imageX{% endblock %}
 {% block content %}
-    <div class="container">
-        <form method="POST" action="" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="photographer">Photographer</label>
-                <select class="col-sm-10 form-control" name="photographer" id="photographer">
-                    <option value="1">Natalie Lung</option>
-                    <option value="2">Simone Hutsch</option>
-                </select>
+    <div class="container py-5">
+        <h1 class="text-center">Image Upload</h1>
+        <p class="text-center">Daily Uploads: {{ daily_quota }} of 4 images left</p>
+        <p class="text-center">Available Storage: {{ system_quota }} of 3 images left</p>
+        {% if state == 'T' %}
+            <div class="alert alert-success text-center" role="alert">
+                {{ message }}
             </div>
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="title">Title</label>
-                <input class="col-sm-10 form-control" type="text" name="title" id="title">
+        {% elif state == 'F' %}
+            <div class="alert alert-danger text-center" role="alert">
+                {{ message }}
             </div>
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="description">Description</label>
-                <textarea class="form-control col-sm-10" name="description" id="description" rows="2"></textarea>
-            </div>
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="category">Category</label>
-                <select class="col-sm-10 form-control" name="category" id="category">
-                    <option selected="selected" value="ABS">Abstract</option>
-                    <option value="AER">Aerial</option>
-                    <option value="ANI">Animals</option>
-                    <option value="ARC">Architecture</option>
-                    <option value="BLA">Black and White</option>
-                    <option value="FAM">Family</option>
-                    <option value="FAS">Fashion</option>
-                    <option value="FIN">Fine Art</option>
-                    <option value="FOO">Food</option>
-                    <option value="JOU">Journalism</option>
-                    <option value="LAN">Landscape</option>
-                    <option value="MAC">Macro</option>
-                    <option value="NAT">Nature</option>
-                    <option value="NIG">Night</option>
-                    <option value="PEO">People</option>
-                    <option value="PER">Performing Arts</option>
-                    <option value="SPO">Sport</option>
-                    <option value="STI">Still Life</option>
-                    <option value="STR">Street</option>
-                    <option value="TRA">Travel</option>
-                </select>
-            </div>
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="tag">Tag</label>
-                <input class="col-sm-10 form-control" type="text" name="tag" id="tag">
-            </div>
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="img">File (JPG only)</label>
-                <input type="file" class="col-sm-10 form-control-file" name="img" id="img">
-            </div>
-            <p>Your daily quota : {{ usr.dailyQuota }}</p>
-            <p>Your system quota : {{ usr.systemQuota }}</p>
-            <button type="submit" class="btn btn-primary mb-2" disabled = "true">Upload</button>
-        </form>
+        {% endif %}
+        {% if daily_quota == 0 or system_quota == 0 %}
+            <p class="text-center">Delete some images and/or upload again tomorrow.</p>
+        {% else %}
+            <form class="py-3" method="POST" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="title">Title</label>
+                    <input class="col-sm-10 form-control" type="text" name="title" id="title">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="description">Description</label>
+                    <textarea class="form-control col-sm-10" name="description" id="description" rows="2"></textarea>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="category">Category</label>
+                    <select class="col-sm-10 form-control" name="category" id="category">
+                        <option selected="selected" value="ABS">Abstract</option>
+                        <option value="AER">Aerial</option>
+                        <option value="ANI">Animals</option>
+                        <option value="ARC">Architecture</option>
+                        <option value="BLA">Black and White</option>
+                        <option value="FAM">Family</option>
+                        <option value="FAS">Fashion</option>
+                        <option value="FIN">Fine Art</option>
+                        <option value="FOO">Food</option>
+                        <option value="JOU">Journalism</option>
+                        <option value="LAN">Landscape</option>
+                        <option value="MAC">Macro</option>
+                        <option value="NAT">Nature</option>
+                        <option value="NIG">Night</option>
+                        <option value="PEO">People</option>
+                        <option value="PER">Performing Arts</option>
+                        <option value="SPO">Sport</option>
+                        <option value="STI">Still Life</option>
+                        <option value="STR">Street</option>
+                        <option value="TRA">Travel</option>
+                    </select>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="tag">Tag</label>
+                    <input class="col-sm-10 form-control" type="text" name="tag" id="tag">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="img">File (JPG only)</label>
+                    <input type="file" class="col-sm-10 form-control-file" name="img" id="img">
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary mb-2">Upload</button>
+                </div>
+            </form>
+        {% endif %}
     </div>
 {% endblock %}

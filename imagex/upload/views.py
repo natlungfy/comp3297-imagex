@@ -1,20 +1,30 @@
 from django.shortcuts import render
-# from upload.models import IMG
+from django.contrib import messages
 from search.models import Image, Member
 
 
 def uploadimg(request):
-    # get member object, get member id, get their quota
-    # in html, if quota > xxx, display disabled upload button, else display enabled upload button
+    member = Member.objects.get(username=request.user.username)  # Member instance with username 'nat'
+    message = state = ''
     if request.method == 'POST':
-        usr = Member.object.get(id = "nat")
-        new_img = Image(
-            img=request.FILES.get('img'),
-            title=request.POST.get('title'),
-            description=request.POST.get('description'),
-            category=request.POST.get('category'),
-            tag=request.POST.get('tag'),
-            photographer=Member.objects.get(id=request.POST.get('photographer'))
-        )
-        new_img.save()
-    return render(request, 'upload/upload.html',{"usr":usr})
+        img_name = request.FILES.get('img').name
+        if img_name.endswith(('.jpg', '.jpeg')):
+            new_img = Image(
+                img=request.FILES.get('img'),
+                title=request.POST.get('title'),
+                description=request.POST.get('description'),
+                category=request.POST.get('category'),
+                tag=request.POST.get('tag'),
+                photographer=member
+            )
+            new_img.save()
+            # Decrease daily quota and system quota by one
+            member.dailyQuota -= 1
+            member.systemQuota -= 1
+            member.save()
+            state = 'T'
+            message = 'Image uploaded'
+        else:
+            state = 'F'
+            message = 'Image is not jpg. Please upload only jpg files.'
+    return render(request, 'upload/upload.html', {'daily_quota': member.dailyQuota, 'system_quota': member.systemQuota, 'state': state, 'message': message})

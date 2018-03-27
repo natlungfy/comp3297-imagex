@@ -1,20 +1,19 @@
 from django.db import models
+from django.contrib.auth.models import User
 import datetime
 
 
 class Member(models.Model):
-    username = models.CharField(max_length=36, unique=True)
-    password = models.CharField(max_length=36)
-    name = models.CharField(max_length=70)
+    username = models.OneToOneField(User, to_field='username', on_delete=models.CASCADE)
     dailyQuota = models.DecimalField(max_digits=1, decimal_places=0, default=4)
     systemQuota = models.DecimalField(max_digits=1, decimal_places=0, default=3)
 
     def __str__(self):
-        return self.username
+        return str(self.username)
 
 
 class Image(models.Model):
-    img = models.ImageField(upload_to='images')
+    img = models.ImageField(upload_to='')
     title = models.CharField(max_length=90)
     CATEGORY = (
         ('ABS', 'Abstract'),
