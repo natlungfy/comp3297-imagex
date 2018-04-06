@@ -1,15 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
+from account.models import Member
 import datetime
-
-
-class Member(models.Model):
-    username = models.OneToOneField(User, to_field='username', on_delete=models.CASCADE)
-    dailyQuota = models.DecimalField(max_digits=1, decimal_places=0, default=4)
-    systemQuota = models.DecimalField(max_digits=1, decimal_places=0, default=3)
-
-    def __str__(self):
-        return str(self.username)
 
 
 class Image(models.Model):
@@ -40,8 +31,23 @@ class Image(models.Model):
     category = models.CharField(max_length=3, choices=CATEGORY, default='ABS')
     description = models.CharField(max_length=280)
     photographer = models.ForeignKey(Member, on_delete=models.CASCADE)
-    tag = models.CharField(max_length=10, null=True)
     uploadDate = models.DateField(default=datetime.date.today)
 
     def __str__(self):
         return self.title
+
+
+class Tag(models.Model):
+    tagName = models.CharField(max_length=10, null=True)
+
+    def __str__(self):
+        return self.tagName
+
+
+class ImageHasTag(models.Model):
+    imgID = models.ManyToManyField(Image)
+    tagID = models.ManyToManyField(Tag)
+
+    def __str__(self):
+        return self.imgID, self.tagID
+

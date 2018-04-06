@@ -3,8 +3,8 @@
 {% block content %}
     <div class="container py-5">
         <h1 class="text-center">Image Upload</h1>
-        <p class="text-center">Daily Uploads: {{ daily_quota }} of 4 images left</p>
-        <p class="text-center">Available Storage: {{ system_quota }} of 3 images left</p>
+        <p class="text-center">Daily Uploads: {{ daily_usage }} of 4 images left</p>
+        <p class="text-center">Available Storage: {{ system_usage }} of 3 images left</p>
         {% if state == 'T' %}
             <div class="alert alert-success text-center" role="alert">
                 {{ message }}
@@ -14,7 +14,7 @@
                 {{ message }}
             </div>
         {% endif %}
-        {% if daily_quota == 0 or system_quota == 0 %}
+        {% if daily_usage == 0 or system_usage == 0 %}
             <p class="text-center">Delete some images and/or upload again tomorrow.</p>
         {% else %}
             <form class="py-3" method="POST" action="" enctype="multipart/form-data">
