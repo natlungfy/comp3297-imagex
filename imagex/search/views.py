@@ -10,6 +10,12 @@ def index(request):
 
 def results(request):
     if request.method == 'GET':
+        keyword = request.GET.get('keyword(s)', None)
+        photographer = request.GET.get('photographer', None)
+
+        images = Image.objects.filter(photographer__exact=photographer)
+
+
         keyword = request.GET.get('keyword', None)
         images = Image.objects.filter(tag__icontains=keyword).order_by('-uploadDate', '-id')
         return render(request, 'search/results.html', {"keyword": keyword, "images": images,

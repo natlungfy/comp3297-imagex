@@ -7,7 +7,7 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
           crossorigin="anonymous">
-    <link href="custom.css" rel="stylesheet">
+    <link href="/static/custom.css" rel="stylesheet">
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
@@ -37,11 +37,6 @@
                     <a class="btn btn-outline-primary" href="/logout/" role="">Log Out</a>
                 {% else %}
                     <a class="btn btn-outline-primary" href="/login/" role="">Log In</a>
-
-                    {#    <form class="form-inline my-2 my-lg-0">#}
-                    {#      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">#}
-                    {#      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>#}
-                    {#    </form>#}
                 {% endif %}
             </div>
         </div>
@@ -73,6 +68,6 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-<script src="holder.min.js"></script>
+<script src="/static/holder.min.js"></script>
 </body>
 </html>
