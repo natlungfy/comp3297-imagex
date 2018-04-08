@@ -6,26 +6,40 @@
             <h1 class="jumbotron-heading">Welcome to imageX</h1>
             <p class="lead text-muted">Download high-quality images for free</p>
             <p>
-            <form action="/search/results/" method="get">
+            <form method="get">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="keyword" placeholder="Search"
+                    <input type="text" class="form-control" name="q"
+                           placeholder="Enter keyword(s) or photographer name"
                            aria-describedby="basic-addon2">
                     <div class="input-group-append">
-
-                        {#                        <input type="submit" class="btn btn-outline-primary" value="Search">#}
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                             Search by...
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <input type="submit" class="dropdown-item" value="keyword(s)">
-                            <input type="submit" class="dropdown-item" value="photographer">
+                            <input type="submit" class="dropdown-item" formaction="/search/results/" value="keyword(s)">
+                            <input type="submit" class="dropdown-item" formaction="/search/photographer/"
+                                   value="photographer">
                         </div>
                     </div>
                 </div>
             </form>
             </p>
-            <p class="px-5">or search by category: Abstract, Aerial, Animals, Architecture, Black and White, Family, Fashion, Fine Art, Food, Journalism, Landscape, Macro, Nature, Night, People, Performing Arts, Sport, Still Life, Street, Travel</p>
+            <p>
+                <form method="get" action="/search/category/">
+                            <div class="dropdown">
+                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        or search by Category
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        {% for k, v in all_cat %}
+                            <button class="dropdown-item" type="submit" name="{{ k }}">{{ v }}</button>
+                        {% endfor %}
+                    </div>
+                </div>
+        </form>
+            </p>
         </div>
     </section>
 
@@ -37,7 +51,8 @@
                         <div class="card mb-4 box-shadow">
                             <img class="card-img-top"
                                  src="http://127.0.0.1:8000/images/{{ i.img }}"
-                                 alt="{{ i.description }}">
+                                 alt="{{ i.description }}"
+                                 id="{{ i.img }}">
                             <div class="card-body">
                                 <h5 class="card-title">{{ i.title }}</h5>
                                 <h6 class="card-subtitle mb-2 text-muted">by {{ i.photographer.username }}</h6>
@@ -55,4 +70,5 @@
                 {% endfor %}
             </div>
         </div>
+    </div>
 {% endblock %}

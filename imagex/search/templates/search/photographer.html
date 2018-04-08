@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Search results - imageX{% endblock %}
+{% block title %}Search by photographer - imageX{% endblock %}
 {% block content %}
     <div class="container py-5">
     {% if images.count == 0 %}
-    <h1>No results for "{{ q }}"</h1>
+    <h1>No photographer named "{{ q }}"</h1>
     <p>Please refine your search query.</p>
     {% else %}
-        <h1>Search results for "{{ q }}"</h1>
+        <h1>Search results for photographer "{{ q }}"</h1>
         <div class="row">
             {% for i in images %}
                 <div class="col-md-4">
