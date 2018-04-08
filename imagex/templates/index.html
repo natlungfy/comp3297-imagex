@@ -8,14 +8,24 @@
             <p>
             <form action="/search/results/" method="get">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="keyword" placeholder="Enter a keyword"
+                    <input type="text" class="form-control" name="keyword" placeholder="Search"
                            aria-describedby="basic-addon2">
                     <div class="input-group-append">
-                        <input type="submit" class="btn btn-outline-primary" value="Search">
+
+                        {#                        <input type="submit" class="btn btn-outline-primary" value="Search">#}
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            Search by...
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <input type="submit" class="dropdown-item" value="keyword(s)">
+                            <input type="submit" class="dropdown-item" value="photographer">
+                        </div>
                     </div>
                 </div>
             </form>
             </p>
+            <p class="px-5">or search by category: Abstract, Aerial, Animals, Architecture, Black and White, Family, Fashion, Fine Art, Food, Journalism, Landscape, Macro, Nature, Night, People, Performing Arts, Sport, Still Life, Street, Travel</p>
         </div>
     </section>
 
