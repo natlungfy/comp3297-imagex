@@ -11,6 +11,8 @@ def index(request):
     all_cat = Image.CATEGORY
     return render(request, 'index.html', {'images': all_images, 'all_cat': all_cat})
 
+# TODO parse tags in search query
+
 
 def results(request):
     if request.method == 'GET':
