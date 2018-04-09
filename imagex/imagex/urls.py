@@ -22,7 +22,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^', include('search.urls')),
-    url(r'^login/$', auth_views.login, {'template_name': 'account/login.html'}, name="login"),
+    url(r'^login/$', auth_views.login, name="login"),
     url(r'^logout/$', auth_views.logout, {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
     path('search/', include('search.urls')),
     path('admin/', admin.site.urls),
