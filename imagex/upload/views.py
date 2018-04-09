@@ -1,7 +1,18 @@
 from django.shortcuts import render
 from account.models import Member
-from search.models import Image, ImageHasTag, Tag
+from search.models import Image, Tag
 import datetime
+
+
+def parse_tags(tag, img):
+    data = tag.split(',')
+    for d in data:
+        if Tag.objects.filter(tagName__iexact=d).count() == 0:
+            new_tag = img.tag.create(tagName=d)
+        else:
+            exist_tag = Tag.objects.filter(tagName__iexact=d)
+            img.tag.add(exist_tag)
+
 
 def upload_image(request):
     member = Member.objects.get(username=request.user.username)  # e.g. Member instance with username 'nat'
@@ -12,7 +23,11 @@ def upload_image(request):
     system_usage = str(3 - Image.objects.filter(photographer=member).count())
     if request.method == 'POST':
         img_name = request.FILES.get('img').name
-        if img_name.endswith(('.jpg', '.jpeg')):
+        tag_list = request.POST.get('tag').split(',')
+        if len(tag_list) > 10:
+            state = 'F'
+            message = 'You cannot add more than 10 tags for an image. Please try again.'
+        elif img_name.endswith(('.jpg', '.jpeg')):
             new_img = Image(
                 img=request.FILES.get('img'),
                 title=request.POST.get('title'),
@@ -22,14 +37,8 @@ def upload_image(request):
             )
             new_img.save()
 
-            # parse tags: parse tag input from POST. Add it to Tag if it is a new tagName, then add the association in ImageHasTag.
-            # parse_tags(request.POST.get('tag'))
-            # tag_input=request.POST.get('tag')
-            #
-            # if Tag.objects.filter(tagName=tag_input).exists():
-            #     new_assoc = ImageHasTag(imgID=new_img, tagID=Tag.objects.get(tagName=tag_input))
-            # else:
-            #     new_tag = Tag(tagName=tag_input)
+            # parse tags
+            parse_tags(request.POST.get('tag'), new_img)
 
             # handle quota
             daily_usage = str(4 - Image.objects.filter(uploadDate=d, photographer=member).count())
