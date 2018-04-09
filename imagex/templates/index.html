@@ -6,40 +6,53 @@
             <h1 class="jumbotron-heading">Welcome to imageX</h1>
             <p class="lead text-muted">Download high-quality images for free</p>
             <p>
-            <form method="get">
+            <form method="get" action="/search/results/">
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" name="q"
-                           placeholder="Enter keyword(s) or photographer name"
+                           placeholder="Enter keyword(s)"
                            aria-describedby="basic-addon2">
                     <div class="input-group-append">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                        <button type="submit" class="btn btn-primary"
                                 aria-haspopup="true" aria-expanded="false">
-                            Search by...
+                            Search
                         </button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <input type="submit" class="dropdown-item" formaction="/search/results/" value="keyword(s)">
-                            <input type="submit" class="dropdown-item" formaction="/search/photographer/"
-                                   value="photographer">
-                        </div>
                     </div>
                 </div>
             </form>
             </p>
-            <p>
+
+            <div class="btn-group">
                 <form method="get" action="/search/category/">
-                            <div class="dropdown">
-                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        or search by Category
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                        {% for k, v in all_cat %}
-                            <button class="dropdown-item" type="submit" name="{{ k }}">{{ v }}</button>
-                        {% endfor %}
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
+                                id="dropdownMenu2"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Search by Category
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                            {% for k, v in all_cat %}
+                                <button class="dropdown-item" type="submit" name="{{ k }}">{{ v }}</button>
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
-        </form>
-            </p>
+                </form>
+                <form method="get" action="/search/photographer/">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
+                                id="dropdownMenu3"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Search by Photographer
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
+                            {% for p in all_photog %}
+                                <button class="dropdown-item" type="submit" name="{{ p }}">{{ p.username.first_name }} {{ p.username.last_name }}</button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
         </div>
     </section>
 

@@ -6,6 +6,6 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     url(r'^results/$', views.results, name='results'),
-    url(r'^photographer/$', views.photographer, name='photographer'),
     url(r'^category/$', views.category, name='category'),
+    url(r'^photographer/$', views.photographer, name='photographer'),
 ]

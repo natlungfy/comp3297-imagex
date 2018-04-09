@@ -43,13 +43,3 @@ class Image(models.Model):
 
     def __str__(self):
         return self.title
-
-
-#
-# class ImageHasTag(models.Model):
-#     imgID = models.ManyToManyField(Image)
-#     tagID = models.ManyToManyField(Tag)
-#
-#     def __str__(self):
-#         return '%s, %s' % (self.imgID, self.tagID)
-#

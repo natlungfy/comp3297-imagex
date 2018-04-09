@@ -7,10 +7,11 @@ import datetime
 def parse_tags(tag, img):
     data = tag.split(',')
     for d in data:
-        if Tag.objects.filter(tagName__iexact=d).count() == 0:
+        num_records = Tag.objects.filter(tagName__iexact=d).count()
+        if num_records == 0:
             new_tag = img.tag.create(tagName=d)
         else:
-            exist_tag = Tag.objects.filter(tagName__iexact=d)
+            exist_tag = Tag.objects.get(tagName__iexact=d)
             img.tag.add(exist_tag)
 
 

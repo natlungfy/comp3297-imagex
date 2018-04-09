@@ -14,7 +14,7 @@
                 {{ message }}
             </div>
         {% endif %}
-        {% if daily_usage == 0 or system_usage == 0 %}
+        {% if daily_usage <= 0 or system_usage <= 0 %}
                         <div class="alert alert-danger text-center" role="alert">
                Delete some images and/or upload again tomorrow.
             </div>
