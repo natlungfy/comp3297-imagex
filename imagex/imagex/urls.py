@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-# from search.views import download
+from search.views import download
 from django.urls import path
 from django.conf.urls import include, url
 from django.conf import settings
@@ -29,7 +29,7 @@ urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('upload/', include('upload.urls')),
                   path('profiles/', include('profiles.urls')),
-                  # url(r'^download/$', download, name="download"),
+                  url(r'^download/$', download, name="download"),
                   url(r'^password_reset/$', auth_views.password_reset, name='password_reset'),
                   url(r'^password_reset/done/$', auth_views.password_reset_done, name='password_reset_done'),
                   url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',

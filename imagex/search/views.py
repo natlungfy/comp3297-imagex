@@ -4,7 +4,6 @@ from .models import Image, Member, Category
 from django.conf import settings
 from django.http import HttpResponse
 from wsgiref.util import FileWrapper
-import mimetypes
 
 
 def index(request):
@@ -41,13 +40,16 @@ def search_photographer(request):
                                                        'media_url': settings.MEDIA_URL})
 
 
-# def download(request):
-#     if request.method == 'GET':
-#         img_name = list(request.GET.keys())[0]
-#         img = Image.objects.get(img=img_name)
-#         wrapper = FileWrapper(open(img.img.file))  # img.file returns full path to the image
-#         content_type = mimetypes.guess_type(img.img)[0]  # Use mimetypes to get file type
-#         response = HttpResponse(wrapper,content_type=content_type)
-#         response['Content-Length'] = os.path.getsize(img.img.file)
-#         response['Content-Disposition'] = "attachment; filename=%s" % img.name
-#         return response
+def download(request):
+    if request.method == 'GET':
+        img_name = list(request.GET.keys())[0]
+
+        img_obj = Image.objects.get(img=img_name)
+        img_obj.num_of_downloads += 1
+        img_obj.save()
+
+        filepath = os.path.join(settings.MEDIA_ROOT, img_name)
+        wrapper = FileWrapper(open(filepath, 'rb'))
+        response = HttpResponse(wrapper, content_type='image/jpeg')
+        response['Content-Disposition'] = "attachment; filename=%s" % img_name
+        return response

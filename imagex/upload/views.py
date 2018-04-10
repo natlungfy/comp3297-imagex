@@ -23,6 +23,7 @@ def upload_image(request):
     daily_usage = member.daily_quota
     if d > member.username.last_login.date():
         member.daily_quota = 4
+        member.save()
         daily_usage = member.daily_quota
     system_usage = str(3 - Image.objects.filter(photographer=member).count())
 
@@ -49,6 +50,7 @@ def upload_image(request):
 
             # handle quota
             member.daily_quota -= 1
+            member.save()
             daily_usage = member.daily_quota
             system_usage = str(3 - Image.objects.filter(photographer=member).count())
 

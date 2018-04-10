@@ -6,7 +6,7 @@
     padding-top: var(--jumbotron-padding-y);
     padding-bottom: var(--jumbotron-padding-y);
     margin-bottom: 0;
-    background-color: #fff;
+    background-color: #E9ECEF;
 }
 
 @media (min-width: 768px) {
@@ -26,6 +26,11 @@
 
 .jumbotron .container {
     max-width: 40rem;
+}
+
+.form-signin {
+    max-width: 30rem;
+    margin: 0 auto;
 }
 
 footer {
