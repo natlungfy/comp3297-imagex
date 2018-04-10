@@ -33,15 +33,11 @@
                 </ul>
                 {% if request.user.is_authenticated %}
                     <span class="navbar-text">Welcome back, {{ request.user.first_name }}</span>
+                    <a class="nav-link pr-0" href="/profiles/">My Profile</a>
                     <a class="nav-link" href="/upload/">Upload</a>
                     <a class="btn btn-outline-primary" href="/logout/" role="">Log Out</a>
                 {% else %}
                     <a class="btn btn-outline-primary" href="/login/" role="">Log In</a>
-
-                    {#    <form class="form-inline my-2 my-lg-0">#}
-                    {#      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">#}
-                    {#      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>#}
-                    {#    </form>#}
                 {% endif %}
             </div>
         </div>

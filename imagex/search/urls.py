@@ -5,7 +5,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    url(r'^results/$', views.results, name='results'),
-    url(r'^category/$', views.category, name='category'),
-    url(r'^photographer/$', views.photographer, name='photographer'),
+    url(r'^results/$', views.search_keyword, name='search_keyword'),
+    url(r'^category/$', views.search_category, name='search_category'),
+    url(r'^photographer/$', views.search_photographer, name='search_photographer'),
 ]
