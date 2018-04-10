@@ -35,6 +35,7 @@
                 {% if request.user.is_authenticated %}
                     <span class="navbar-text">Welcome back, {{ request.user.first_name }}</span>
                     <a class="nav-link pr-0" href="/profiles/">My Profile</a>
+                    <a class="nav-link pr-0" href="/change_password/">Change Password</a>
                     <a class="nav-link" href="/upload/">Upload</a>
                     <a class="btn btn-outline-primary" href="/logout/" role="">Log Out</a>
                 {% else %}
