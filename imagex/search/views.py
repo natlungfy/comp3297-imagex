@@ -16,7 +16,17 @@ def index(request):
 def search_keyword(request):
     if request.method == 'GET':
         q = request.GET.get('q', None)
-        images = Image.objects.filter(tag__iexact=q).order_by('-upload_date', '-id')
+
+        keywords = q.split(' ')
+        if len(keywords) == 1:
+            images = Image.objects.filter(tag__tag_name__iexact=keywords[0])
+        else:
+            # multiple keyword search: only show images containing all the tags
+
+            images = Image.objects.filter(tag__tag_name__iexact=keywords[0])
+            for k in keywords:
+                images = images.filter(tag__tag_name__iexact=k)
+
         return render(request, 'search/results.html', {"q": q, "images": images,
                                                        'media_url': settings.MEDIA_URL})
 
@@ -28,16 +38,17 @@ def search_category(request):
         d = dict(Category.CATEGORY)
         cat_name = d[cat]
         return render(request, 'search/category.html', {'cat_name': cat_name, 'images': images,
-                                                       'media_url': settings.MEDIA_URL})
+                                                        'media_url': settings.MEDIA_URL})
 
 
 def search_photographer(request):
     if request.method == 'GET':
         photog = list(request.GET.keys())[0]
         images = Image.objects.filter(photographer__username__username__exact=photog)
-        full_name = Member.objects.get(username=photog).username.first_name + " " + Member.objects.get(username=photog).username.last_name
+        full_name = Member.objects.get(username=photog).username.first_name + " " + Member.objects.get(
+            username=photog).username.last_name
         return render(request, 'search/photographer.html', {'full_name': full_name, 'images': images,
-                                                       'media_url': settings.MEDIA_URL})
+                                                            'media_url': settings.MEDIA_URL})
 
 
 def download(request):

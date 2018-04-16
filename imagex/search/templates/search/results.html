@@ -2,38 +2,57 @@
 {% block title %}Search results - imageX{% endblock %}
 {% block content %}
     <div class="container py-5">
-    {% if images.count == 0 %}
-    <h1>No results for "{{ q }}"</h1>
-    <p>Please refine your search query.</p>
-    {% else %}
-        <h1 class="pb-3">Search results for "{{ q }}"</h1>
-        <div class="row">
-            {% for i in images %}
-                <div class="col-md-4">
-                    <div class="card mb-4 box-shadow">
-                        <img class="card-img-top"
-                             src="http://127.0.0.1:8000{{ media_url }}{{ i.img }}"
-                             alt="{{ i.description }}"
-                             id="{{ i.img }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ i.title }}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">by {{ i.photographer.username }}</h6>
-                            <p class="card-body">{{ i.description }}</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-primary">Like</button>
+        {% if images.count == 0 %}
+            <h1>No results for "{{ q }}"</h1>
+            <p>Please refine your search query.</p>
+        {% else %}
+            <h1 class="pb-3">Search results for "{{ q }}"</h1>
+            <form method="get" action="/search/results/">
+                <div class="text-right dropup">
+                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
+                            id="dropdownMenu3"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Sort by
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
+                        <a class="dropdown-item" href="{{ request.get_full_path }}&sort=recent"
+                           role="button">Most Recent First</a>
+                        <a class="dropdown-item" href="{{ request.get_full_path }}&sort=popular"
+                           role="button">Most Popular First</a>
+                    </div>
+                </div>
+            </form>
+            <div class="row">
+                {% for i in images %}
+                    <div class="col-md-4">
+                        <div class="card mb-4 box-shadow">
+                            <img class="card-img-top"
+                                 src="http://127.0.0.1:8000{{ media_url }}{{ i.img }}"
+                                 alt="{{ i.description }}"
+                                 id="{{ i.img }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ i.title }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">
+                                    by {{ i.photographer.username }}</h6>
+                                <p class="card-body">{{ i.description }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-sm btn-outline-primary">Like
+                                        </button>
                                         <form method="GET" action="/download/">
-                                        <button type="submit" class="btn btn-sm btn-outline-primary" name="{{ i.img.name }}">Download</button>
+                                            <button type="submit" class="btn btn-sm btn-outline-primary"
+                                                    name="{{ i.img.name }}">Download
+                                            </button>
                                         </form>
+                                    </div>
+                                    <small class="text-muted">{{ i.num_of_downloads }} Downloads</small>
                                 </div>
-                                <small class="text-muted">{{ i.num_of_downloads }} Downloads</small>
                             </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
 
 {% endblock %}
