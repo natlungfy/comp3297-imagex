@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from search.views import download
-from account.views import change_password
+from accounts.views import change_password
 from django.urls import path
 from django.conf.urls import include, url
 from django.conf import settings
@@ -37,4 +37,5 @@ urlpatterns = [
                   url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
                       auth_views.password_reset_confirm, name='password_reset_confirm'),
                   url(r'^reset/done/$', auth_views.password_reset_complete, name='password_reset_complete'),
+                  url(r'^invitations/', include('invitations.urls', namespace='invitations')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'profiles.apps.ProfilesConfig',
-    'account.apps.AccountConfig',
+    'accounts.apps.AccountConfig',
     'search.apps.SearchConfig',
     'upload.apps.UploadConfig',
     'django.contrib.admin',
@@ -40,7 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'invitations',
 ]
+
+INVITATIONS_INVITATION_ONLY = True
 
 SITE_ID = 1
 
@@ -75,6 +80,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'imagex.wsgi.application'
+
+ACCOUNT_ADAPTER = 'invitations.models.InvitationsAdapter'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases

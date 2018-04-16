@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from account.models import Member
+from accounts.models import Member
 from search.models import Image, Tag, Category
 import datetime
 

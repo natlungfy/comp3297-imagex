@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from search.models import Image
-from account.models import Member
+from accounts.models import Member
 
 from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
