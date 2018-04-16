@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Upload Image - imageX{% endblock %}
+{% block content %}
+    <div class="container py-5">
+        <h1 class="text-center">Image Upload</h1>
+        <p class="text-center">Daily Uploads: {{ daily_usage }} of 4 images left</p>
+        <p class="text-center">Available Storage: {{ system_usage }} of 3 images left</p>
+        {% if state == 'T' %}
+            <div class="alert alert-success text-center" role="alert">
+                {{ message }}
+            </div>
+        {% elif state == 'F' %}
+            <div class="alert alert-danger text-center" role="alert">
+                {{ message }}
+            </div>
+        {% endif %}
+        {% if daily_usage <= 0 or system_usage <= 0 %}
+                        <div class="alert alert-danger text-center" role="alert">
+               Delete some images and/or upload again tomorrow.
+            </div>
+        {% else %}
+            <form class="py-3" method="POST" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="title">Title</label>
+                    <input class="col-sm-10 form-control" type="text" name="title" id="title">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="description">Description</label>
+                    <textarea class="form-control col-sm-10" name="description" id="description" rows="2"></textarea>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="category">Category</label>
+                    <select class="col-sm-10 form-control" name="category" id="category">
+                        <option selected="selected">Choose...</option>
+                        {% for k, v in all_cat %}
+                            <option value="{{ k }}">{{ v }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="tag">Tags (Max. of 10 allowed; separate with commas)</label>
+                    <input class="col-sm-10 form-control" type="text" name="tag" id="tag">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="img">File (JPG only)</label>
+                    <input type="file" class="col-sm-10 form-control-file" name="img" id="img">
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary mb-2">Upload</button>
+                </div>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}
