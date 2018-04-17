@@ -31,7 +31,7 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                             {% for k, v in all_cat %}
-                                <button class="dropdown-item" type="submit" name="{{ k }}">{{ v }}</button>
+                                <button class="dropdown-item" type="submit" name="cat" value="{{ k }}">{{ v }}</button>
                             {% endfor %}
                         </div>
                     </div>
@@ -45,7 +45,7 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
                             {% for p in all_photog %}
-                                <button class="dropdown-item" type="submit" name="{{ p }}">{{ p.username.first_name }} {{ p.username.last_name }}</button>
+                                <button class="dropdown-item" type="submit" name="photog" value="{{ p }}">{{ p.username.first_name }} {{ p.username.last_name }}</button>
                             {% endfor %}
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                                  id="{{ i.img.name }}">
                             <div class="card-body">
                                 <h5 class="card-title">{{ i.title }}</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">by {{ i.photographer.username }}</h6>
+                                <h6 class="card-subtitle mb-2 text-muted">posted by {{ i.photographer.username }} on {{ i.upload_date }}</h6>
                                 <p class="card-body">{{ i.description }}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
