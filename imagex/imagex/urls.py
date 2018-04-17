@@ -28,7 +28,7 @@ urlpatterns = [
                   url(r'^logout/$', auth_views.logout, {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
                   path('search/', include('search.urls')),
                   path('admin/', admin.site.urls),
-                  path('accounts/', include('allauth.urls')),
+                  path('account/', include('allauth.urls')),
                   path('upload/', include('upload.urls')),
                   path('profiles/', include('profiles.urls')),
                   url(r'^download/$', download, name="download"),

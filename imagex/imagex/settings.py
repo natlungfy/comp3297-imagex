@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'profiles.apps.ProfilesConfig',
-    'accounts.apps.AccountConfig',
+    'accounts.apps.AccountsConfig',
     'search.apps.SearchConfig',
     'upload.apps.UploadConfig',
     'django.contrib.admin',
@@ -119,9 +119,12 @@ AUTHENTICATION_BACKENDS = (
 )
 
 ACCOUNT_USER_MODEL_USERNAME_FIELD = "username"
-ACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = "username"
+
+
+ACCOUNT_SIGNUP_FORM_CLASS = 'accounts.forms.SignupForm'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
