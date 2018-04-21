@@ -49,6 +49,7 @@ class Image(models.Model):
     photographer = models.ForeignKey(Member, on_delete=models.CASCADE)
     upload_date = models.DateField(default=datetime.date.today)
     num_of_downloads = models.IntegerField(default=0)
+    num_of_likes = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
