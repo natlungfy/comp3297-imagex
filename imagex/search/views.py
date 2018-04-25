@@ -2,12 +2,20 @@ import os
 from django.shortcuts import render
 from .models import Image, Member, Category
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from wsgiref.util import FileWrapper
+from django.db.models import F
 
 
 def index(request):
-    all_images = Image.objects.all().order_by('-id')
+
+    images = Image.objects.all()
+
+    img_with_popularity = images.annotate(
+        popularity=F('num_of_downloads') + F('num_of_likes')
+    )
+
+    all_images = img_with_popularity.order_by('-popularity')
     all_cat = Category.CATEGORY
     all_photog = Member.objects.all()
     return render(request, 'index.html', {'images': all_images, 'all_cat': all_cat, 'all_photog': all_photog})
@@ -16,7 +24,7 @@ def index(request):
 def search_keyword(request):
     if request.method == 'GET':
         q = request.GET.get('q', None)
-
+        url_q = q.replace(' ', '+')
         keywords = q.split(' ')
         if len(keywords) == 1:
             images = Image.objects.filter(tag__tag_name__iexact=keywords[0])
@@ -31,8 +39,13 @@ def search_keyword(request):
             sort = request.GET.getlist('sort')[0]
             if sort == 'recent':
                 images = images.order_by('-id')
+            elif sort == 'popular':
+                img_with_popularity = images.annotate(
+                    popularity=F('num_of_downloads') + F('num_of_likes')
+                )
+                images = img_with_popularity.order_by('-popularity')
 
-        return render(request, 'search/results.html', {"q": q, "images": images,
+        return render(request, 'search/results.html', {"q": q, "url_q": url_q, "images": images,
                                                        'media_url': settings.MEDIA_URL})
 
 
@@ -45,10 +58,15 @@ def search_category(request):
             sort = request.GET.getlist('sort')[0]
             if sort == 'recent':
                 images = images.order_by('-id')
+            elif sort == 'popular':
+                img_with_popularity = images.annotate(
+                    popularity=F('num_of_downloads') + F('num_of_likes')
+                )
+                images = img_with_popularity.order_by('-popularity')
 
         d = dict(Category.CATEGORY)
         cat_name = d[cat]
-        return render(request, 'search/category.html', {'cat_name': cat_name, 'images': images,
+        return render(request, 'search/category.html', {'q': cat, 'cat_name': cat_name, 'images': images,
                                                         'media_url': settings.MEDIA_URL})
 
 
@@ -61,10 +79,15 @@ def search_photographer(request):
             sort = request.GET.getlist('sort')[0]
             if sort == 'recent':
                 images = images.order_by('-id')
+            elif sort == 'popular':
+                img_with_popularity = images.annotate(
+                    popularity=F('num_of_downloads') + F('num_of_likes')
+                )
+                images = img_with_popularity.order_by('-popularity')
 
         full_name = Member.objects.get(username=photog).username.first_name + " " + Member.objects.get(
             username=photog).username.last_name
-        return render(request, 'search/photographer.html', {'full_name': full_name, 'images': images,
+        return render(request, 'search/photographer.html', {'q': photog, 'full_name': full_name, 'images': images,
                                                             'media_url': settings.MEDIA_URL})
 
 
@@ -81,3 +104,14 @@ def download(request):
         response = HttpResponse(wrapper, content_type='image/jpeg')
         response['Content-Disposition'] = "attachment; filename=%s" % img_name
         return response
+
+
+def like(request):
+    if request.method == 'GET':
+        img_name = list(request.GET.keys())[0]
+
+        img_obj = Image.objects.get(img=img_name)
+        img_obj.num_of_likes += 1
+        img_obj.save()
+
+        return HttpResponseRedirect('/')

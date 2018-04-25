@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from search.views import download
+from search.views import download, like
 from accounts.views import change_password
 from django.urls import path
 from django.conf.urls import include, url
@@ -32,6 +32,7 @@ urlpatterns = [
                   path('upload/', include('upload.urls')),
                   path('profiles/', include('profiles.urls')),
                   url(r'^download/$', download, name="download"),
+                  url(r'^like/$', like, {'next_page': 'index.html'}, name="like"),
                   url(r'^change_password/$', change_password, name='change_password'),
                   url(r'^password_reset/$', auth_views.password_reset, name='password_reset'),
                   url(r'^password_reset/done/$', auth_views.password_reset_done, name='password_reset_done'),

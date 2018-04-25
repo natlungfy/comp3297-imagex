@@ -45,7 +45,8 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
                             {% for p in all_photog %}
-                                <button class="dropdown-item" type="submit" name="photog" value="{{ p }}">{{ p.username.first_name }} {{ p.username.last_name }}</button>
+                                <button class="dropdown-item" type="submit" name="photog"
+                                        value="{{ p }}">{{ p.username.first_name }} {{ p.username.last_name }}</button>
                             {% endfor %}
                         </div>
                     </div>
@@ -68,15 +69,27 @@
                                  id="{{ i.img.name }}">
                             <div class="card-body">
                                 <h5 class="card-title">{{ i.title }}</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">posted by {{ i.photographer.username }} on {{ i.upload_date }}</h6>
+                                <h6 class="card-subtitle mb-2 text-muted">posted by {{ i.photographer.username }}
+                                    on {{ i.upload_date }}</h6>
                                 <p class="card-body">{{ i.description }}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-outline-primary">Like</button>
+                                        {% if request.user.is_authenticated %}
+                                            {% if i.photographer.username.username != request.user.username %}
+                                                <form method="GET" action="/like/">
+                                                    <button type="submit" class="btn btn-sm btn-outline-primary"
+                                                            name="{{ i.img.name }}" value="{{ request.path }}">Like
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                        {% endif %}
                                         <form method="GET" action="/download/">
-                                        <button type="submit" class="btn btn-sm btn-outline-primary" name="{{ i.img.name }}">Download</button>
+                                            <button type="submit" class="btn btn-sm btn-outline-primary"
+                                                    name="{{ i.img.name }}">Download
+                                            </button>
                                         </form>
                                     </div>
+                                    <small class="text-muted">{{ i.num_of_likes }} Likes</small>
                                     <small class="text-muted">{{ i.num_of_downloads }} Downloads</small>
                                 </div>
                             </div>
