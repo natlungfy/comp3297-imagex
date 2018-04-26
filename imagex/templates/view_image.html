@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}View - imageX{% endblock %}
+{% block content %}
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-sm-9">
+                <img src="http://localhost:8000/images/{{ image.img }}" width="100%">
+            </div>
+            <div class="col-sm-3">
+            <h2>{{ image.title }}</h2>
+            <p><strong>Description:</strong> {{ image.description }}</p>
+            <p><strong>Tag(s): </strong>{% for t in image.tag.all %}{{ t }}{%if not forloop.last%}, {%endif%}{% endfor %}</p>
+            <p><strong>Category:</strong> {{ cat }}</p>
+                <p>
+                    <strong>Photographer:</strong> <a
+                                        href="http://localhost:8000/profiles/{{ image.photographer.username.username }}">{{ image.photographer.username.first_name }} {{ image.photographer.username.last_name }}
+                    ({{ image.photographer.username }})</a></p>
+                <p><strong>Upload Date:</strong> {{ image.upload_date }}</p>
+                <p><strong>Likes:</strong> {{ image.num_of_likes }}</p>
+                <p><strong>Downloads:</strong> {{ image.num_of_downloads }}</p>
+                <div class="d-flex align-items-center">
+                    {% if request.user.is_authenticated %}
+                        {% if image.photographer.username.username != request.user.username %}
+                            <form method="POST"
+                                  action="{% url 'like_image' image.pk %}">{% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-outline-primary">Like
+                                </button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                    <form method="GET" action="/download/">
+                        <button type="submit" class="btn btn-sm btn-outline-primary"
+                                name="{{ i.img.name }}">Download
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

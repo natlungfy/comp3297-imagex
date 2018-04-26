@@ -2,82 +2,84 @@
 {% block title %}Profile - imageX{% endblock %}
 {% block content %}
 
-<div class="container py-5">
-  <h1 class="text-center">Your Profile</h1>
-  <h4 class="text-center" >{{request.user.username}} </h4>
-  <h4 class ="text-center">{{request.user.first_name}} {{request.user.last_name}}</h4>
-  <h5 class="text-center"> {{member_description}} </h5>
+    <div class="container py-5 text-center">
+        <h1>Edit Profile</h1>
 
-  <form class="py-3" method="POST" action="{% url 'profiles:update_profile' member_pk %}" enctype="multipart/form-data">
-      {% csrf_token %}
-      <div class="form-group row">
-          <label class="col-sm-2 col-form-label" for="title">First name</label>
-          <input class="col-sm-10 form-control" type="text" name="first_name" id="first_name" value="{{request.user.first_name}}">
-      </div>
-      <div class="form-group row">
-          <label class="col-sm-2 col-form-label" for="description">Last name</label>
-          <input class="form-control col-sm-10" name="last_name" id="last_name" value="{{request.user.last_name}}">
-      </div>
-      <div class="form-group row">
-          <label class="col-sm-2 col-form-label" for="description">Email</label>
-          <input class="form-control col-sm-10" name="email" id="email" value="{{request.user.email}}">
-      </div>
-      <div class="form-group row">
-          <label class="col-sm-2 col-form-label" for="description">Description</label>
-          <textarea class="form-control col-sm-10" name="description" id="description" rows="2">{{member_description}}</textarea>
-      </div>
-      <div class="text-center">
-          <button type="submit" class="btn btn-primary mb-2">Save Changes</button>
-      </div>
-  </form>
-
-</div>
-
-
-
-<div class="album py-5">
-  <div class="container">
-    <div class="row">
-      {% for i in images %}
-      <div class="col-md-4">
-        <div class="card mb-4 box-shadow">
-          <img class="card-img-top"
-          src="http://127.0.0.1:8000/images/{{ i.img }}"
-          alt="{{ i.description }}">
-          <div class="card-body">
-            <h5 class="card-title">{{ i.title }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">by {{ i.photographer.username }}</h6>
-            <p class="card-body">{{ i.description }}</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <form action="{% url 'profiles:delete_image' i.pk %}" method="POST">{% csrf_token %}
-                <div class="btn-group">
-                  <button type="submit" data-toggle="confirmation" class="btn btn-sm btn-outline-primary">Delete</button>
-                </div>
-              </form>
-              <small class="text-muted">{{ i.num_of_likes }} Likes</small>
-              <small class="text-muted">{{ i.num_of_downloads }} Downloads</small>
+        <form class="py-3" method="POST" action="{% url 'profiles:update_profile' member_pk %}"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="title">First name</label>
+                <input class="col-sm-10 form-control" type="text" name="first_name" id="first_name"
+                       value="{{ request.user.first_name }}">
             </div>
-          </div>
-        </div>
-      </div>
-      {% endfor %}
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="description">Last name</label>
+                <input class="form-control col-sm-10" name="last_name" id="last_name"
+                       value="{{ request.user.last_name }}">
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="description">Email</label>
+                <input class="form-control col-sm-10" name="email" id="email" value="{{ request.user.email }}">
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="description">Description</label>
+                <textarea class="form-control col-sm-10" name="description" id="description"
+                          rows="2">{{ member_description }}</textarea>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary mb-2">Save Changes</button>
+            </div>
+        </form>
+
     </div>
-  </div>
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-  crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-  crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-  crossorigin="anonymous"></script>
-  {% load static %}
-  <script src="{% static 'bootstrap-confirmation.js' %}"></script>
-  <script>
-  $('[data-toggle=confirmation]').confirmation({
-    rootSelector: '[data-toggle=confirmation]',
-    container: 'body'
-  });
-  </script>
-  {% endblock %}
+
+
+
+    <div class="album py-5">
+        <div class="container">
+            <div class="row">
+                {% for i in images %}
+                    <div class="col-md-4">
+                        <div class="card mb-4 box-shadow">
+                            <img class="card-img-top"
+                                 src="http://127.0.0.1:8000/images/{{ i.img }}"
+                                 alt="{{ i.description }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ i.title }}</h5>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <form action="{% url 'profiles:delete_image' i.pk %}" method="POST">{% csrf_token %}
+                                        <div class="btn-group">
+                                            <button type="submit" data-toggle="confirmation"
+                                                    class="btn btn-sm btn-outline-primary" name="{{ i.pk }}">Delete
+                                            </button>
+                                        </div>
+                                    </form>
+                                    <small class="text-muted">{{ i.num_of_likes }} Likes</small>
+                                    <small class="text-muted">{{ i.num_of_downloads }} Downloads</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    {% load static %}
+    <script src="{% static 'bootstrap-confirmation.js' %}"></script>
+    <script>
+        $('[data-toggle=confirmation]').confirmation({
+            rootSelector: '[data-toggle=confirmation]',
+            container: 'body'
+        });
+    </script>
+{% endblock %}

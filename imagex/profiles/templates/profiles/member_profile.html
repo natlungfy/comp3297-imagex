@@ -2,54 +2,56 @@
 {% block title %}Profile - imageX{% endblock %}
 {% block content %}
 
-<div class="container py-5">
-  <h4 class="text-center" >{{username}} </h4>
-  <h4 class ="text-center">{{first_name}} {{last_name}}</h4>
-  <h4 class ="text-center">{{email}}</h4>
-  <h5 class="text-center"> {{member_description}} </h5>
+    <div class="container-fluid py-5 text-center">
+        <h4>{{ first_name }} {{ last_name }} ({{ username }})</h4>
+        <p> {{ member_description }} </p>
+        <p><a href="mailto:{{ email }}">{{ email }}</a></p>
 
-</div>
+        {% if username == request.user.username %}
+            <a class="btn btn-outline-primary" href="/profiles/{{ request.user.username }}/edit">Edit Profile</a>
+            <a class="btn btn-outline-primary" href="/change_password/">Change Password</a>
+        {% endif %}
 
-
-
-<div class="album py-5">
-  <div class="container">
-    <div class="row">
-      {% for i in images %}
-      <div class="col-md-4">
-        <div class="card mb-4 box-shadow">
-          <img class="card-img-top"
-          src="http://127.0.0.1:8000/images/{{ i.img }}"
-          alt="{{ i.description }}">
-          <div class="card-body">
-            <h5 class="card-title">{{ i.title }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">by {{ i.photographer.username }}</h6>
-            <p class="card-body">{{ i.description }}</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <small class="text-muted">{{ i.num_of_likes }} Likes</small>
-              <small class="text-muted">{{ i.num_of_downloads }} Downloads</small>
-            </div>
-          </div>
-        </div>
-      </div>
-      {% endfor %}
     </div>
-  </div>
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-  crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-  crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-  crossorigin="anonymous"></script>
-  {% load static %}
-  <script src="{% static 'bootstrap-confirmation.js' %}"></script>
-  <script>
-  $('[data-toggle=confirmation]').confirmation({
-    rootSelector: '[data-toggle=confirmation]',
-    container: 'body'
-  });
-  </script>
-  {% endblock %}
+    <div class="album py-5">
+        <div class="container">
+            <div class="row">
+                {% for i in images %}
+                    <div class="col-md-4">
+                        <div class="card mb-4 box-shadow">
+                            <a href="/view/?img={{ i.img.name }}"><img class="card-img-top"
+                                                                       src="http://localhost:8000/images/{{ i.img }}"
+                                                                       alt="{{ i.description }}"
+                                                                       id="{{ i.img.name }}"></a>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ i.title }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">posted on {{ i.upload_date }}</h6>
+                                <p class="card-body">{{ i.description }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        {% if request.user.is_authenticated %}
+                                            {% if i.photographer.username.username != request.user.username %}
+                                                <form method="POST"
+                                                      action="{% url 'like_image' i.pk %}">{% csrf_token %}
+                                                    <button type="submit" class="btn btn-sm btn-outline-primary">Like
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                        {% endif %}
+                                        <form method="GET" action="/download/">
+                                            <button type="submit" class="btn btn-sm btn-outline-primary"
+                                                    name="{{ i.img.name }}">Download
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <small class="text-muted">{{ i.num_of_likes }} Likes</small>
+                                    <small class="text-muted">{{ i.num_of_downloads }} Downloads</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

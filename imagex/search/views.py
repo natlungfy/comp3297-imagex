@@ -2,13 +2,14 @@ import os
 from django.shortcuts import render
 from .models import Image, Member, Category
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from wsgiref.util import FileWrapper
 from django.db.models import F
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
 
 
 def index(request):
-
     images = Image.objects.all()
 
     img_with_popularity = images.annotate(
@@ -63,6 +64,11 @@ def search_category(request):
                     popularity=F('num_of_downloads') + F('num_of_likes')
                 )
                 images = img_with_popularity.order_by('-popularity')
+        else:
+            img_with_popularity = images.annotate(
+                popularity=F('num_of_downloads') + F('num_of_likes')
+            )
+            images = img_with_popularity.order_by('-popularity')
 
         d = dict(Category.CATEGORY)
         cat_name = d[cat]
@@ -84,6 +90,11 @@ def search_photographer(request):
                     popularity=F('num_of_downloads') + F('num_of_likes')
                 )
                 images = img_with_popularity.order_by('-popularity')
+        else:
+            img_with_popularity = images.annotate(
+                popularity=F('num_of_downloads') + F('num_of_likes')
+            )
+            images = img_with_popularity.order_by('-popularity')
 
         full_name = Member.objects.get(username=photog).username.first_name + " " + Member.objects.get(
             username=photog).username.last_name
@@ -106,12 +117,18 @@ def download(request):
         return response
 
 
-def like(request):
+def view_image(request):
     if request.method == 'GET':
-        img_name = list(request.GET.keys())[0]
+        img_name = request.GET.get('img')
 
         img_obj = Image.objects.get(img=img_name)
-        img_obj.num_of_likes += 1
-        img_obj.save()
 
-        return HttpResponseRedirect('/')
+        cat = dict(Category.CATEGORY)[img_obj.category.cat_name]
+        return render(request, 'view_image.html', {'image': img_obj, 'cat': cat })
+
+
+def like(request, pk):
+    image = Image.objects.get(id=pk)
+    image.num_of_likes += 1
+    image.save()
+    return redirect(reverse_lazy('profiles:view_profile', kwargs={'username': image.photographer.username}))

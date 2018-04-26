@@ -14,9 +14,9 @@
                         Sort by
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
-                        <a class="dropdown-item" href="http://127.0.0.1:8000/search/category/?cat{{ q }}&sort=recent"
+                        <a class="dropdown-item" href="http://localhost:8000/search/category/?cat={{ q }}&sort=recent"
                            role="button">Most Recent First</a>
-                        <a class="dropdown-item" href="http://127.0.0.1:8000/search/category/?cat{{ q }}&sort=popular"
+                        <a class="dropdown-item" href="http://localhost:8000/search/category/?cat={{ q }}&sort=popular"
                            role="button">Most Popular First</a>
                     </div>
                 </div>
@@ -25,18 +25,27 @@
                 {% for i in images %}
                     <div class="col-md-4">
                         <div class="card mb-4 box-shadow">
-                            <img class="card-img-top"
-                                 src="http://127.0.0.1:8000{{ media_url }}{{ i.img }}"
-                                 alt="{{ i.description }}"
-                                 id="{{ i.img }}">
+                            <a href="/view/?img={{ i.img.name }}"><img class="card-img-top"
+                                                                       src="http://localhost:8000/images/{{ i.img }}"
+                                                                       alt="{{ i.description }}"
+                                                                       id="{{ i.img.name }}"></a>
                             <div class="card-body">
                                 <h5 class="card-title">{{ i.title }}</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">posted by {{ i.photographer.username }}
+                                <h6 class="card-subtitle mb-2 text-muted">by <a
+                                        href="http://localhost:8000/profiles/{{ i.photographer.username.username }}">{{ i.photographer.username }}</a>
                                     on {{ i.upload_date }}</h6>
                                 <p class="card-body">{{ i.description }}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-outline-primary">Like</button>
+                                        {% if request.user.is_authenticated %}
+                                            {% if i.photographer.username.username != request.user.username %}
+                                                <form method="POST"
+                                                      action="{% url 'like_image' i.pk %}">{% csrf_token %}
+                                                    <button type="submit" class="btn btn-sm btn-outline-primary">Like
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                        {% endif %}
                                         <form method="GET" action="/download/">
                                             <button type="submit" class="btn btn-sm btn-outline-primary"
                                                     name="{{ i.img.name }}">Download

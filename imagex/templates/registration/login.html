@@ -4,7 +4,15 @@
     <div class="container text-center py-5 px-20">
         <h1>Log in</h1>
         {% if form.errors %}
-            <div class="alert alert-danger">Your username and password didn't match, please try again.</div>
+
+            <div class="alert alert-danger">
+                <ul>
+                    {% for k,v in form.errors.items %}
+                        {{ v|striptags }}
+                    {% endfor %}
+                </ul>
+            </div>
+
         {% endif %}
         <form class="form-signin py-3" method="POST">
             {% csrf_token %}
@@ -13,7 +21,7 @@
             <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
         </form>
-    <hr/>
+        <hr/>
         <p><a href="{% url 'password_reset' %}">Forget Password</a></p>
     </div>
 {% endblock %}

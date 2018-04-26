@@ -46,7 +46,9 @@
                         <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
                             {% for p in all_photog %}
                                 <button class="dropdown-item" type="submit" name="photog"
-                                        value="{{ p }}">{{ p.username.first_name }} {{ p.username.last_name }}</button>
+                                        value="{{ p }}">{{ p.username.first_name }} {{ p.username.last_name }}
+                                    ({{ p.username }})
+                                </button>
                             {% endfor %}
                         </div>
                     </div>
@@ -57,28 +59,29 @@
         </div>
     </section>
 
-    <div class="album py-5">
-        <div class="container">
+    <div class="album">
+        <div class="container py-5">
             <div class="row">
                 {% for i in images %}
                     <div class="col-md-4">
                         <div class="card mb-4 box-shadow">
-                            <img class="card-img-top"
-                                 src="http://127.0.0.1:8000/images/{{ i.img }}"
-                                 alt="{{ i.description }}"
-                                 id="{{ i.img.name }}">
+                            <a href="/view/?img={{ i.img.name }}"><img class="card-img-top"
+                                                                       src="http://localhost:8000/images/{{ i.img }}"
+                                                                       alt="{{ i.description }}"
+                                                                       id="{{ i.img.name }}"></a>
                             <div class="card-body">
                                 <h5 class="card-title">{{ i.title }}</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">posted by <a href="profiles/{{i.photographer.username.username}}">{{ i.photographer.username }}</a>
+                                <h6 class="card-subtitle mb-2 text-muted">by <a
+                                        href="profiles/{{ i.photographer.username.username }}">{{ i.photographer.username }}</a>
                                     on {{ i.upload_date }}</h6>
                                 <p class="card-body">{{ i.description }}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
                                         {% if request.user.is_authenticated %}
                                             {% if i.photographer.username.username != request.user.username %}
-                                                <form method="GET" action="/like/">
-                                                    <button type="submit" class="btn btn-sm btn-outline-primary"
-                                                            name="{{ i.img.name }}" value="{{ request.path }}">Like
+                                                <form method="POST"
+                                                      action="{% url 'like_image' i.pk %}">{% csrf_token %}
+                                                    <button type="submit" class="btn btn-sm btn-outline-primary">Like
                                                     </button>
                                                 </form>
                                             {% endif %}
@@ -100,3 +103,4 @@
         </div>
     </div>
 {% endblock %}
+

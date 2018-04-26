@@ -6,9 +6,18 @@
 
         <h1>{% trans "Sign Up" %}</h1>
 
-        <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>
-            .{% endblocktrans %}</p>
+        <p>Already have an account? Then please <a href="{% url 'login' %}">log in</a>.</p>
+        {% if form.errors %}
 
+            <div class="alert alert-danger">
+                <ul>
+                    {% for k,v in form.errors.items %}
+                        {{ v }}
+                    {% endfor %}
+                </ul>
+            </div>
+
+        {% endif %}
         <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
             {% csrf_token %}
             {{ form.as_p }}
