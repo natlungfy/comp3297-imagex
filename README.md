@@ -12,6 +12,7 @@ Repo for imageX project
 * Clicking the "Like" button increases like count and redirects to the profile of that image's photographer.
 * Admin panel is accessible at localhost:8000/admin
 * There are 3 accounts available for testing. Of course, you can invite new members and register new accounts / create new superusers.
+
 | Level           | Username | Password  |
 |-----------------|----------|-----------|
 | Superuser/Admin | nexus    | nexus3297 |
