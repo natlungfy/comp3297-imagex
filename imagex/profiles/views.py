@@ -34,6 +34,17 @@ def update(request, pk):
     
     return redirect(reverse_lazy('profiles:view_profile'))
 
+def member_profile(request,username):
+    member_username = username
+    current_user_pk = Member.objects.filter(username = member_username)[0].id
+    member = User.objects.filter(username = username)[0]
+    first_name = member.first_name
+    last_name = member.last_name
+    email = member.email
+    member_description = Member.objects.filter(username = member_username)[0].description
+    users_images = Image.objects.filter(photographer=current_user_pk).order_by('-upload_date', '-id')
+    return render(request, 'profiles/member_profile.html', {'images': users_images, 'member_description' : member_description,
+                                                            'member_pk' : current_user_pk,'first_name' : first_name,'last_name' : last_name,'email' : email})
 
 class DeleteImage(DeleteView):
     model = Image
